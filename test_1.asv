@@ -1,20 +1,24 @@
+
 clear all
+%example
+% Q3 6 3 0 my-npn
 fname="BJT_1.cir";
 transistor_netlist
-fname="output.test";
+% fname="output.test";
 scam
 
 H=v_2/v_1
 
-
+% H=v_2/Vin 
 H=collect(H)
 pretty(H)
-
+% 
+% 
 Hnumbers = eval(H)
-
+% 
 [n,d]=numden(Hnumbers)
 mySys=tf(sym2poly(n),sym2poly(d))
-
+% 
 mySys=minreal(mySys)
 % step(mySys)
 bode(mySys)

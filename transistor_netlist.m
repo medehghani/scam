@@ -1,8 +1,3 @@
-clear all
-%example
-% Q3 6 3 0 my-npn
-fname="BJT_1.cir";
-
 %% Print out the netlist (a file describing the circuit with one circuit
 % per line.
 fprintf('Netlist:');
@@ -21,13 +16,8 @@ nLines = length(Name);  % Number of lines in file (or elements in circuit).
 
 %% 2
 
-qlines = [];
 nQ = 0;
 lines(nLines) = "";
-% % Rpi = [];
-% Ro = [];
-% % Rpi = [];
-% GQ = [];
 
 % Scan Lines for "Models"
 for k1=1:nLines
@@ -40,26 +30,30 @@ for k1=1:nLines
             n3 = (arg3{k1});  % This find n3
             tag = Name{k1}(2:end);
             nQ = nQ + 1;
-            disp("Found One "+ tag)
-            qlines = [qlines k1];
             
             % Small Signal model of BJT transistor
-            
             % Rpi_tag   N2   N3   Symbolic
             % Ro_tag   N1   N3   Symbolic
             % GQ_tag    N1   N3   N2   N3   gm_tag
- 
-             rpi(nQ) = sprintf("Rpi_%s %s %s Symbolic", tag, n2{1}, n3);
-             ro(nQ) = sprintf("Ro_%s %s %s Symbolic", tag, n1{1}, n3);
-             gq(nQ) = sprintf("Rpi_%s %s %s %s %s Symbolic", tag, n1{1}, n3, n2{1}, n3);
+            
+            % Cje_tag   N2   N3   Symbolic
+            % Cjc_tag   N2   N1   Symbolic
+            % BF=200 CJC=20pf CJE=20pf IS=1E-16
+            
+            
+             rpi(nQ) = sprintf("Rpi_%s %s %s 2.5e3", tag, n2{1}, n3);
+             ro(nQ) = sprintf("Ro_%s %s %s 100e3", tag, n1{1}, n3);
+             gq(nQ) = sprintf("Gq_%s %s %s %s %s 40e-3", tag, n1{1}, n3, n2{1}, n3);
+             
+             cje(nQ) = sprintf("Cje_%s %s %s 20e-12", tag, n2{1}, n3);
+             cjc(nQ) = sprintf("Cjc_%s %s %s 20e-12", tag, n2{1}, n1{1});
+             
         otherwise
-            
             lines(k1) = join([Name{k1}, N1{k1}, N2{k1}, arg3{k1}, arg4{k1}, arg5{k1}, ""], " ");
-            
     end
 end
 
-lines = [lines, rpi, ro, gq];
+lines = [lines, rpi, ro, gq, cje, cjc];
 
 lines_chars = convertStringsToChars(lines);
 lines_chars(strcmp('',lines_chars)) = [];
@@ -67,32 +61,3 @@ lines_chars(strcmp('',lines_chars)) = [];
 filePh = fopen('output.test','w');
 fprintf(filePh,'%s\n',lines_chars{:});
 fclose(filePh);
-
-
-% Rebuild File
-% Scan Lines for "Models"
-% for k1=1:nLines
-%     n1 = N1(k1);   % Get the two node numbers
-%     n2 = N2(k1);
-%
-%     switch Name{k1}(1)
-%         % Passive element
-%         case 'Q'
-%             n3 = str2double(arg3{k1});  % This find n3
-%             tag = Name{k1}(2:end);
-%             nQ = nQ + 1;
-%             disp("Found One "+ tag)
-%             qlines = [qlines k1];
-%
-%             % Small Signal model of BJT transistor
-%
-%             % Rpi_tag   N2   N3   Symbolic
-%             Rpi(nQ,:) = {join(['Rpi_', tag]), n2, n3, 'Symbolic'};
-%             % Ro_tag   N1   N3   Symbolic
-%             Ro(nQ,:) = {join(['Ro_', tag]), n1, n3, 'Symbolic'};
-%             % GQ_tag    N1   N3   N2   N3   gm_tag
-%             GQ(nQ,:) = {join(['GQ_', tag]), n1, n3, n2, n3, 'Symbolic'};
-%
-%     end
-% end
-

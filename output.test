@@ -1,21 +1,7 @@
 Vi 1 0 Symbolic   
-Rc 2 0 Symbolic   
-*      
-*V1 1 0 12   
-*R1 1 2 1000   
-*R2 2 0 1000   
-*R3 3 0 1000   
-*Ha 3 2 V1 r  
-*Vin 3 0 Symbolic   
-*R1 1 3 Symbolic   
-*R2 2 1 Symbolic   
-*OAmp 0 1 2   
-Rpi_1 1 0 Symbolic
-Rpi_2 1 0 Symbolic
-Rpi_mehdi 1 0 Symbolic
-Ro_1 2 0 Symbolic
-Ro_2 2 0 Symbolic
-Ro_mehdi 2 0 Symbolic
-Rpi_1 2 0 1 0 Symbolic
-Rpi_2 2 0 1 0 Symbolic
-Rpi_mehdi 2 0 1 0 Symbolic
+Rc 2 0 10e3   
+Rpi_1 1 0 2.5e3
+Ro_1 2 0 100e3
+Gq_1 2 0 1 0 40e-3
+Cje_1 1 0 20e-12
+Cjc_1 1 2 20e-12
